@@ -4,9 +4,12 @@ import ExcelJS from 'exceljs';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import cors from 'cors';
 
 const app = express();
 const port = 3000;
+
+app.use(cors());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -59,7 +62,9 @@ const saveToExcel = async (reviews, fileName) => {
   return filePath;
 };
 
-// Main route
+app.use(express.static(path.join(__dirname, 'pages')));
+
+
 app.get('/fetch-reviews', async (req, res) => {
   const { appId, rating = '1', limit = 100 } = req.query;
 

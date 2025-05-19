@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Google Play Review Exporter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f0f8ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 2rem 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 20px rgba(0, 123, 255, 0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h2 {
+      color: #007bff;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 1rem;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .footer {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      text-align: center;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>🎯 Export Play Store Reviews</h2>
+    <form id="reviewForm" method="GET" action="/fetch-reviews">
+      <label for="appId">App Package Name</label>
+      <input type="text" id="appId" name="appId" placeholder="e.g., com.whatsapp" required/>
+
+      <label for="rating">Rating Filter</label>
+      <input type="text" id="rating" name="rating" placeholder="e.g., 1, 1-3, 1-5" required/>
+
+      <label for="limit">Max Reviews</label>
+      <input type="number" id="limit" name="limit" placeholder="e.g., 1000" required min="1""/>
+
+      <button type="submit">Download Excel</button>
+    </form>
+
+    <div class="footer">
+      Powered by google-play-scraper + ExcelJS
+    </div>
+  </div>
+</body>
+</html>
