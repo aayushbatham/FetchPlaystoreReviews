@@ -1,0 +1,10 @@
+{
+  "name": "playstore-review-api",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "google-play-scraper": "^10.0.1",
+    "express": "^4.18.2"
+  }
+}
