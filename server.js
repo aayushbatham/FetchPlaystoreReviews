@@ -37,30 +37,30 @@ const fetchReviews = async (appId, allowedRatings, limit) => {
   return allReviews.data.filter(review => allowedRatings.includes(review.score));
 };
 
-const saveToExcel = async (reviews, fileName) => {
-  const workbook = new ExcelJS.Workbook();
-  const worksheet = workbook.addWorksheet('Filtered Reviews');
-
-  worksheet.columns = [
-    { header: 'User', key: 'userName', width: 30 },
-    { header: 'Rating', key: 'score', width: 10 },
-    { header: 'Review', key: 'text', width: 100 },
-    { header: 'Date', key: 'date', width: 20 },
-  ];
-
-  reviews.forEach(review => {
-    worksheet.addRow({
-      userName: review.userName,
-      score: review.score,
-      text: review.text,
-      date: review.date
+async function saveToExcel(reviews, filename) {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Filtered Reviews');
+  
+    worksheet.columns = [
+      { header: 'User', key: 'userName', width: 30 },
+      { header: 'Rating', key: 'score', width: 10 },
+      { header: 'Review', key: 'text', width: 100 },
+      { header: 'Date', key: 'date', width: 20 },
+    ];
+  
+    reviews.forEach(review => {
+      worksheet.addRow({
+        userName: review.userName,
+        score: review.score,
+        text: review.text,
+        date: review.date
+      });
     });
-  });
-
-  const filePath = path.join(__dirname, 'downloads', fileName);
-  await workbook.xlsx.writeFile(filePath);
-  return filePath;
-};
+  
+    const tmpPath = path.join(os.tmpdir(), filename);
+    await workbook.xlsx.writeFile(tmpPath);
+    return tmpPath;
+  }
 
 app.use(express.static(path.join(__dirname, 'pages')));
 
@@ -80,9 +80,7 @@ app.get('/fetch-reviews', async (req, res) => {
     const fileName = `${appId.replace(/\./g, '_')}_${rating}_stars.xlsx`;
 
     const filePath = await saveToExcel(reviews, fileName);
-    res.download(filePath, fileName, () => {
-      fs.unlink(filePath, () => {}); // Clean up file after sending
-    });
+    res.download(filePath, fileName);
   } catch (err) {
     console.error(err);
     res.status(500).send('❌ Failed to fetch reviews');
